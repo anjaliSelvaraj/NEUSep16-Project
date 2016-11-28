@@ -1,0 +1,14 @@
+import java.text.ParseException;
+import java.util.ArrayList;
+
+interface ApplySpecialInterface {
+boolean checkDealer();
+boolean checkValidity() throws ParseException;
+boolean checkCarYear();
+boolean checkCarMake();
+boolean checkCarModel();
+boolean checkCarMinMaxPrice();
+void setSplTree();
+Special getSpecial(ArrayList<Special> specialList) throws ParseException;
+
+}
