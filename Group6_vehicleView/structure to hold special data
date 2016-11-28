@@ -1,0 +1,20 @@
+import java.util.*;
+public class CarSpecificSpecialList {
+	String splTitle;
+	Double specialledPrice;
+	String expiry;
+    CarSpecificSpecialList(String splTitle,double specialledPrice,Date expiry)
+    {   this.splTitle=splTitle.toString();
+        this.specialledPrice=Double.valueOf(specialledPrice);
+        this.expiry=expiry.toString();
+    	ArrayList<Object> al=new ArrayList<Object>();
+    	al.add(this.specialledPrice);
+    	al.add(this.expiry);
+    	HashMap<String, ArrayList<Object>> hm =new HashMap<String, ArrayList<Object>>();
+    	hm.put(this.splTitle, al);	
+    }
+	CarSpecificSpecialList()
+	{
+		
+	}
+}
