@@ -1,0 +1,104 @@
+import java.text.*;
+import java.util.*;
+
+class ApplySpecial implements ApplySpecialInterface
+{
+private double specialledPrice;
+private int i;
+private int f=1;
+private Special spl;
+private Vehicle car;
+ApplySpecial(Vehicle car) throws ParseException
+{
+	initProcess();
+	car.splTree= new TreeSet<CarSpecificSpecialList>(new CompareByPrice());
+	car.splTreeByExpiry=new TreeSet<CarSpecificSpecialList>(new CompareByExpiry());
+}
+ApplySpecial()
+{
+	
+}
+ void initProcess() throws ParseException
+{
+	for(int i=0;i< Specials.specialList.size();i++)
+	{
+		while(f==1)
+		{	
+		spl=getSpecial(Specials.specialList);
+		checkDealer();
+		checkCarMake();
+		checkCarYear();
+		checkCarModel();
+		checkCarMinMaxPrice();
+		checkValidity();
+		setSplTree();
+		}
+    }	 	
+}
+public Special getSpecial(ArrayList<Special> specialList) {
+	
+	 spl=(specialList.get(i));
+	 return spl;
+}
+@Override
+public boolean checkDealer() {
+	if(spl.getDealerWebID().equalsIgnoreCase(car.getWebId())||spl.getDealerWebID()==null)
+	return true;
+	else
+		f=0;
+	return false;		
+}
+@Override
+public boolean checkValidity() throws ParseException {
+	DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	Date today;
+	today=df.parse(df.format((new Date())));
+	if((spl.getSpecialEndDate()==null || spl.getSpecialStartDate()==null)||
+			(spl.getSpecialEndDate().after(today))&&(spl.getSpecialStartDate()).before(today))
+		return true;
+     else 
+		f=0;
+	return false;
+}
+@Override
+public boolean checkCarYear() {
+	if(spl.getCarYear()==car.getYear()||spl.getCarYear()==1990)
+		return true;
+	else
+		f=0;
+	return false;
+}
+@Override
+public boolean checkCarMake() {
+	if(spl.getCarMake().equalsIgnoreCase(car.getMake())||spl.getCarMake().equals(" "))
+	return true;
+	else 
+		f=0;
+	return false;
+}
+@Override
+public boolean checkCarModel() {
+	if(spl.getCarModel().equalsIgnoreCase(car.getModel())||spl.getCarModel().equals(" "))
+		return true;
+	else
+		f=0;
+	return false;
+}
+@Override
+public boolean checkCarMinMaxPrice() {
+	if(car.getPrice()>=spl.getCarMinPrice()&& car.getPrice()<=spl.getCarMaxPrice())
+		return true;
+	else
+		f=0;
+	return false;
+}
+@Override
+public void setSplTree() {
+if(spl.getDiscountValue()!=0)
+	specialledPrice=car.getPrice()-spl.getDiscountValue();
+else
+	specialledPrice=car.getPrice()-((spl.getDicountPercentage()/100.00)*car.getPrice());
+car.splTree.add(new CarSpecificSpecialList(spl.getSpecialTitle(),specialledPrice,spl.getSpecialEndDate()));
+car.splTreeByExpiry.add(new CarSpecificSpecialList(spl.getSpecialTitle(),specialledPrice,spl.getSpecialEndDate()));
+}
+}
